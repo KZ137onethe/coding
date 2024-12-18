@@ -2,12 +2,12 @@
   "name": "coding",
   "version": "1.0.0",
   "description": "",
+  "author": "guanhai",
   "main": "index.js",
   "scripts": {
     "test": "jest"
   },
   "keywords": [],
-  "author": "guanhai",
   "license": "ISC",
   "devDependencies": {
     "jest": "^29.7.0"
