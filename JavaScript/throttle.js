@@ -45,6 +45,7 @@ function _throttle(fn, interval) {
  * 2.对尾部进行控制
  *  options.trailing 为 true 时，会在最后一次触发高频率事件触发fn函数，怎么判断用户是不是最后一次触发这个非常不好把握
  * 3.节流取消功能
+ * 4.节流函数返回值
  */
 function throttle(fn, interval, { leading = true, trailing = false } = {}) {
   let startTime = 0
