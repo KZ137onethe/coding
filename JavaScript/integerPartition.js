@@ -28,6 +28,4 @@ function integerPartition(value) {
   }
 }
 
-module.exports = {
-  integerPartition,
-}
+export { integerPartition }

@@ -65,8 +65,4 @@ function debounce(fn, delay, immediate = false) {
   return _debounce
 }
 
-module.exports = {
-  baseDebounce,
-  _debounce,
-  debounce,
-}
+export { baseDebounce, _debounce, debounce }

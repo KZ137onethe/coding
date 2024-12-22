@@ -62,8 +62,4 @@ function superDeepClone(origin, hashMap = new WeakMap()) {
   return target
 }
 
-module.exports = {
-  _deepClone,
-  deepClone,
-  superDeepClone,
-}
+export { _deepClone, deepClone, superDeepClone }
