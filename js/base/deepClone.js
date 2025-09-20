@@ -1,4 +1,9 @@
-// ES5
+/**
+ * ES5中的深度克隆
+ * @param {Object.<string, any>} origin 原对象
+ * @param {undefined | Object.<string, any>} target 原对象会被克隆到该对象中
+ * @returns 克隆后的对象
+ */
 function _deepClone(origin, target) {
   var tar = target || {}
   var toStr = Object.prototype.toString
@@ -17,7 +22,15 @@ function _deepClone(origin, target) {
   return tar
 }
 
-// ES6
+
+/**
+ * ES6普适型深度克隆
+ * @param {Object.<string, any>} origin 原对象
+ * @returns 克隆后的对象
+ * @summary
+ * * 缺点:
+ *    1. 无法处理循环引用
+ */
 function deepClone(origin) {
   if (origin == undefined || typeof origin !== "object") {
     return origin
@@ -37,7 +50,15 @@ function deepClone(origin) {
   return target
 }
 
-// ES6，解决对象相互引用的问题
+/**
+ * ES6通用型深度克隆
+ * @param {any} origin 原对象
+ * @param {Map.<string, any>} hashMap 记录循环引用
+ * @returns 克隆后的对象
+ * @summary
+ * * 解决:
+ *    1. 处理循环引用
+ */
 function superDeepClone(origin, hashMap = new WeakMap()) {
   if (origin == undefined || typeof origin !== "object") {
     return origin
@@ -62,4 +83,20 @@ function superDeepClone(origin, hashMap = new WeakMap()) {
   return target
 }
 
-export { _deepClone, deepClone, superDeepClone }
+/**
+ * 现代化深度克隆(Node17以上支持)
+ * @param {Object.<string, any>} origin 原对象
+ * @returns 克隆后的对象
+ * @summary
+ *  * 优点:
+ *    1. 可以替代 JSON.parse(JSON.stringify(obj))
+ *    2. 可以处理循环引用
+ *    3. 可以处理特殊的数据类型,如: Symbol,Date,undefined,RegExp,NaN,Infinity,Map,Set,WeakMap,WeakSet等
+ * * 缺点:
+ *    1. 不支持函数、DOM节点、原型链
+ */
+function modernDeepClone(origin) {
+  return structuredClone(origin)
+}
+
+export { _deepClone, deepClone, superDeepClone, modernDeepClone }
