@@ -1,0 +1,16 @@
+{
+  "name": "@code/playground",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "browser-codec": "npx webpack serve --config browser/codec/webpack.config.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "packageManager": "pnpm@10.17.0",
+  "dependencies": {
+    "@code/business": "workspace:*"
+  }
+}
