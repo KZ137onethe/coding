@@ -1,28 +1,63 @@
 import map from "./expression.js";
+import chalk from "chalk";
 
-function excuteFn(fnName) {
-  if (
-    typeof this !== "object" &&
-    !(this instanceof Map) &&
-    !RegExp.prototype.hasOwnProperty(fnName)
-  )
-    return;
+class RegExpTest {
+  /**
+   * 构造器
+   * @param {Map<RegExp, string | string[]>} data 正则表达式数据
+   */
+  constructor(data) {
+    this.data = data;
+  }
 
-  for (let key of this.keys()) {
-    const values = this.get(key);
-    console.log(`RegExp expression: ${key}`);
-    if (typeof values === "string") {
-      console.log(` test string: '${values}', test result: `, key[fnName](values));
-    } else if (Array.isArray(values)) {
-      values.forEach((val) => {
-        console.log(` test string: '${val}', test result: `, key[fnName](val));
-      });
+  #cb({ isArr, isStr }) {
+    for (let [key, val] of this.data.entries()) {
+      if (Object.prototype.toString.call(val) === "[object Array]") {
+        val.forEach((v) => {
+          isArr(key, v);
+        });
+      } else if (Object.prototype.toString.call(val) === "[object String]") {
+        isStr(key, v);
+      }
     }
+  }
+
+  toExec() {
+    this.#cb({
+      isArr: (key, v) => {
+        console.log(` test string: '${v}', test result: `, RegExp.prototype.exec.call(key, v));
+      },
+      isStr: (key, val) => {
+        console.log(` test string: '${val}', test result: `, RegExp.prototype.exec.call(key, val));
+      },
+    });
+  }
+
+  toTest() {
+    this.#cb({
+      isArr: (key, v) => {
+        console.log(` test string: '${v}', test result: `, RegExp.prototype.test.call(key, v));
+      },
+      isStr: (key, val) => {
+        console.log(` test string: '${val}', test result: `, RegExp.prototype.test.call(key, val));
+      },
+    });
+  }
+
+  toMatch() {
+    this.#cb({
+      isArr: (key, v) => {
+        console.log(` test string: '${v}', test result: `, String.prototype.match.call(v, key));
+      },
+      isStr: (key, val) => {
+        console.log(` test string: '${val}', test result: `, String.prototype.match.call(key, val));
+      },
+    });
   }
 }
 
 ((data) => {
-  const vFn = excuteFn.bind(data);
+  const test = new RegExpTest(data);
 
-  vFn("exec");
+  test.toExec();
 })(map.strMap);
