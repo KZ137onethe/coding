@@ -3,7 +3,6 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
-	"type": "module",
   "scripts": {
     "browser-codec": "npx webpack serve --config browser/codec/webpack.config.js"
   },
@@ -13,5 +12,11 @@
   "packageManager": "pnpm@10.17.0",
   "dependencies": {
     "@code/business": "workspace:*"
+  },
+  "devDependencies": {
+    "css-loader": "^7.1.2",
+    "sass": "^1.93.3",
+    "sass-loader": "^16.0.6",
+    "style-loader": "^4.0.0"
   }
 }

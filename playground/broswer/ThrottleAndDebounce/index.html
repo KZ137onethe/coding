@@ -2,14 +2,29 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
   </head>
   <body>
-    <input id="searchIpt" type="search" placeholder="请输入..." value="" />
-    <button id="cancelBtn">取消防抖</button>
+    <fieldset class="box-1">
+      <legend>防抖</legend>
+      <input
+        class="searchIpt"
+        type="search"
+        placeholder="请输入..."
+        value="" />
+      <button class="cancelBtn">取消防抖</button>
+    </fieldset>
+
+    <br />
+
+    <fieldset class="box-2">
+      <legend>节流</legend>
+			<span class="point-record">当前鼠标未进入网格</span>
+      <div class="content"></div>
+    </fieldset>
   </body>
-  <script type="module">
-    
-  </script>
+  <script type="module"></script>
 </html>
