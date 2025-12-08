@@ -25,17 +25,26 @@ const strMap = new Map([
   [/[A-C]/, ["brisket", "Choop", "sql"]],
   // 一个否定的字符类
   [/[^a-t]/, ["kobe", "mary", "tom"]],
+  // 匹配除行终止符之外的任何单个字符
   [/./, [`\n`, "apple", 56123]],
+  // 匹配任何数字字符
   [/\d/, ["1213", 4567, "8as32", new Date().toLocaleDateString("fa-IR")]],
+  // 匹配任何非数字字符
   [/\D/, ["abcde", 1231456, new Date().toLocaleString(), "Hello, world!"]],
-  [/\w/, ["$el", "batch number", " production ", "__main__", "****2590****"]], // 匹配拉丁字母中的任何字母数字字符，包括下划线
-  [/\W/, ["$el", "batch number", " production ", "__main__", "****2590****"]], // 匹配任何不是来自基本拉丁字母的单词字符
+  // 匹配拉丁字母中的任何字母数字字符，包括下划线
+  [/\w/, ["$el", "batch number", " production ", "__main__", "****2590****"]],
+  // 匹配任何不是来自基本拉丁字母的单词字符
+  [/\W/, ["$el", "batch number", " production ", "__main__", "****2590****"]],
+  // 匹配单个空白字符串,包括:空格,制表符,换页符,换行符和其他Unicode字符串
   [/\s/, ["Hello, sir.", "A beautiful day!", "Washing Machine", "apple"]],
+  // 匹配除空格以外的单个字符。
   [/\S/, [" beer ", "func"]],
+  // 匹配水平制表符,回车符,换行符,垂直制表符,换页符
   [
     /[\t\r\n\v\f]/,
     ["水平制表符（也就是tab键）\t", "回车符\r", "下一行\n", "垂直制表符\v", "换页符\f"],
   ],
+  // 退格符
   [/\b/, ["he he \b"]],
   // 可以在这里搜索 unicode 字符: https://symbl.cc/cn/
   // 匹配与hh(两个十六进制数字)对应的字符
@@ -48,36 +57,68 @@ const strMap = new Map([
   // 参考: https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Regular_expressions/Unicode_character_class_escape
   [/\p{Script=Common}/gu, ["○", "◌", "◈", "▣"]],
   [/\p{Script=Han}/gu, ["北京", "郑州", "青岛", "太原", "南京", "青岛", "长沙"]],
+  // \ 匹配转义后的字符串
   [/\\t*/, ["\t hello", "	yes ", "Hi!\\t"]],
-  [/a|b+/, ["apple", "blue", "about", "can"]],
+  // 匹配 a 或者 b, | 代表可选项
+  [/(a|b)+/, ["apple", "blue", "about", "can"]],
 ]);
 
 // tag: 断言类型
 const affirmMap = new Map([
-  [/^abc/, "abcd"], // 匹配开头
-  [/bcd$/, ["haha bcde"]], // 匹配结尾
-  [/llo\b/, ["Hello world!"]], // 匹配单词的边界
-  [/\Bon/, ["moon", "on glass", "once"]], // 匹配非单词匹配
+  // 匹配以什么什么开头
+  [/^abc/, "abcd"],
+  // 匹配以什么什么结尾
+  [/cool$/, ["You're so cool", "Were're so cool", "They're not cool anymore"]],
+  // \b 匹配单词的边界
+  [/llo\b/, ["Hello world!", "Allow you to rest"]],
+  // \B 匹配非单词匹配
+  [/\Bon/, ["moon", "on glass", "once"]],
   [/ly\B/, ["only", "lying", "lonely patients"]],
-  [/ab(?=out|ove)/, ["about", "above", "abcedfg", "acdab"]], // 先行断言
-  [/a(?!pp)/, ["apple", "accout", "abcd"]], // 先行否定断言
-  [/(?<=pear|peach)s/, ["pears", "peachs", "grapefruits"]], // 后行断言
+  // 先行断言：x(?=y)  x 被 y 跟随时匹配 x。
+  [/ab(?=out|ove)/, ["about", "above", "abstract", "abuse"]],
+  // 先行否定断言：x(?!y)	x 没有被 y 紧随时匹配 x。
+  [/a(?!pp)/, ["apple", "app", "available"]],
+  // 后行断言：(?<=y)x x 跟随 y 的情况下匹配 x。
+  [/(?<=pear|peach)s/, ["pears", "peaches", "grapefruits"]],
+  // 后行否定断言：(?<!y)x	x 不跟随 y 时匹配 x。
   [/(?<!inflat|outdat)ed/, ["uneducated", "inflated", "outdated"]], // 后行否定断言
 ]);
 
 // tag: 组和范围类型
 const groupsAndRangeMap = new Map([
+  // 匹配 "x" 或 "y" 任意一个字符。
   [/x|y/, ["lonely", "How much?", "Are you ok?"]],
-  [/[a-c]/i, ["fast", "through", "Potatos"]],
+  // 字符集：[xyz]或者[a-c]
+  [/[a-c]/i, ["fast", "through", "Potatoes"]],
+  // 一个否定的或被补充的字符集。
   [/[^a-m]/i, ["In contrast", "underscore", "Don't count the days.", "make the days count."]],
   // 捕获组：匹配 x 并记住匹配项(使用圆括号 ())。例如，/(foo)/匹配并记住“foo bar”中的“foo”
   [/(\d{4})[a-z](\d{2})/, ["1982*12", "4512a45"]],
   // \n, 其中n是一个正整数，对正则表达式中与 n 括号匹配的最后一个子字符串的反向引用 (计算左括号)
-  [/[^\d]\d{4}(-)[a-z]{4}\1/gi, ["7890-abT-1234-qwUd-dadw-1235", "098-SDwq-31123-dQDd-qwe3"]],
+  [/[^\d]\d{4}(-)[a-z]{4}\1/gi, ["7890-abT-1234-qwUd-daDw-1235", "098-SDwq-31123-dQDd-qwe3"]],
   // 具名捕获组：匹配"x"并将其存储在返回的匹配项的 groups 属性中，该属性位于<Name>指定的名称下。尖括号 (< 和 >) 用于组名。语法：(?<Name>x)
-  [/(?<id>\d{4,5})-(?<realname>[a-z]{3,8})/, ["3245-tom", "65231-mary"]],
-  // 非捕获组
+  [/(?<id>\d{4,5})-(?<realName>[a-z]{3,8})/, ["3245-tom", "65231-mary"]],
+  // 非捕获组：(?:x) 匹配 “x”，但不记得匹配。
   [/work:\s(?:\w+)/, ["work: softwareDeveloper", "work: dustman"]],
+]);
+
+// 测试用
+const testMap = new Map([
+  [
+    /\s+/,
+    [
+      "Nothing ever fatigues me but doing what I do not like",
+      "Be brave today, the dark night will pass.",
+      "There's no shame in meeting a worthy opponent.",
+    ],
+  ],
+  [
+    /\uFF0C|\u3002|\uFF1F/u,
+    [
+      "有些事情，只有身临其境，才明白事情的原委。",
+      "生活简朴，方能放下杂念，拥抱真正有价值的一切。",
+    ],
+  ],
 ]);
 
 module.exports = {
@@ -85,4 +126,5 @@ module.exports = {
   strMap,
   affirmMap,
   groupsAndRangeMap,
+  testMap,
 };
